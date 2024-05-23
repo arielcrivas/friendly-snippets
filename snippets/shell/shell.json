@@ -4,6 +4,21 @@
         "body": "echo \"${0:message}\"",
         "description": "Echo a message."
     },
+    "print": {
+        "prefix": "print",
+        "body": "print -u2 \"${0:message}\"",
+        "description": "Echo a message."
+    },
+    "printf": {
+        "prefix": "printf",
+        "body": "print -u2 -f '%s\\n' -- \"${0:message}\"",
+        "description": "Echo a message."
+    },
+    "array": {
+      "prefix": "arr",
+      "body": "${1:VAR}=(${0})",
+      "description": "Array assignment"
+    },
     "read": {
         "prefix": "read",
         "body": "read -r ${0:VAR}",
@@ -14,10 +29,25 @@
         "body": "if [[ ${1:condition} ]]; then\n\t${0}\nfi",
         "description": "An IF statement."
     },
+    "ifn": {
+        "prefix": "ifn",
+        "body": "if (( ${1:condition} )); then\n\t${0}\nfi",
+        "description": "An IF statement for numeric comparisons."
+    },
+    "ifvar": {
+        "prefix": "ifvar",
+        "body": "if (( $+${VAR} )); then\n\t${0}\nfi",
+        "description": "An IF statement for testing variable existance."
+    },
     "elseif": {
-        "prefix": "elseif",
+        "prefix": "elif",
         "body": "elif [[ ${1:condition} ]]; then\n\t${0}",
         "description": "Add an elseif to an if statement."
+    },
+    "elseifn": {
+        "prefix": "elifn",
+        "body": "elif (( ${1:condition} )); then\n\t${0}",
+        "description": "Add an elseif for numeric comparisons to an if statement."
     },
     "else": {
         "prefix": "else",
@@ -29,24 +59,49 @@
         "body": "for ${1:VAR} in ${0:LIST}\ndo\n\techo \"\\$${1:VAR}\"\ndone\n",
         "description": "for loop in list"
     },
+    "for_each": {
+        "prefix": "foreach_in",
+        "body": "foreach ${1:VAR} in ${0:LIST}\ndo\n\techo \"\\$${1:VAR}\"\ndone\n",
+        "description": "foreach in list"
+    },
     "for_i": {
         "prefix": "for_i",
-        "body": "for ((${1:i} = 0; ${1:i} < ${0:10}; ${1:i}++)); do\n\techo \"\\$${1:i}\"\ndone\n",
+        "body": "for (( ${1:index} = 1; ${1:index} <= ${0:10}; ${1:index}++ )); do\n\techo \"\\$${1:index}\"\ndone\n",
         "description": "An index-based iteration for loop."
     },
     "while": {
         "prefix": "while",
-        "body": "while [[ ${1:condition} ]]; do\n\t${0}\ndone\n",
+        "body": "while [[ ${1:condition} ]]; do\n\t${0}\n\tbreak\ndone\n",
         "description": "A while loop by condition."
+    },
+    "whilen": {
+        "prefix": "whilen",
+        "body": "while (( ${1:condition} )); do\n\t${0}\n\tbreak\ndone\n",
+        "description": "A while loop by numeric condition."
+    },
+    "whtrue": {
+        "prefix": "whilet",
+        "body": "while :; do\n\t${0}\n\n\tbreak\ndone\n",
+        "description": "A while loop by true condition."
     },
     "until": {
         "prefix": "until",
-        "body": "until [[ ${1:condition} ]]; do\n\t${0}\ndone\n",
+        "body": "until [[ ${1:condition} ]]; do\n\t${0}\n\tbreak\ndone\n",
         "description": "until loop by condition"
+    },
+    "untiln": {
+        "prefix": "untiln",
+        "body": "until (( ${1:condition} )); do\n\t${0}\n\tbrak\ndone\n",
+        "description": "until loop by numeric condition"
+    },
+    "untilf": {
+        "prefix": "untilf",
+        "body": "until false; do\n\t${0}\n\tbreak\ndone\n",
+        "description": "until loop by false condition"
     },
     "function": {
         "prefix": "function",
-        "body": "${1:name} ()\n{\n\t${0}\n}",
+        "body": "function ${1:name} {\n\t${0}\n}",
         "description": [
             "This defines a function named name.\n",
             "The reserved word function is optional.\n",
@@ -74,7 +129,17 @@
     },
     "expr": {
         "prefix": "expr",
-        "body": "expr ${0:1 + 1}",
-        "description": "Calculate numbers with Bash."
+        "body": "(( var + ${0:1} ))",
+        "description": "Calculate numbers with Bash or Zsh."
+    },
+    "zparseopts": {
+        "prefix": "zopts",
+        "body": "zparseopts -E -D -- ${0}\\\n\t{h,-help}=aidezmoi \\\n\t-version=apropos\n",
+        "description": "A basic zparseopts statement."
+    },
+    "zparsearray": {
+        "prefix": "zparr",
+        "body": "\n${VAR}=(${0})\nzparseopts -E -D -- \"${VAR}[@]\"",
+        "description": "A basic zparseopts statement with an array."
     }
 }
