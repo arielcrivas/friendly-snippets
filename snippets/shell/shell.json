@@ -56,18 +56,23 @@
     },
     "for_in": {
         "prefix": "for_in",
-        "body": "for ${1:VAR} in ${0:LIST}\ndo\n\techo \"\\$${1:VAR}\"\ndone\n",
+        "body": "for ${1:VAR} in ${0:LIST}; do\n\techo \"\\$${1:VAR}\"\ndone\n",
         "description": "for loop in list"
     },
     "for_each": {
         "prefix": "foreach_in",
-        "body": "foreach ${1:VAR} in ${0:LIST}\ndo\n\techo \"\\$${1:VAR}\"\ndone\n",
+        "body": "foreach ${1:VAR} in ${0:LIST}; do\n\techo \"\\$${1:VAR}\"\ndone\n",
         "description": "foreach in list"
     },
     "for_i": {
         "prefix": "for_i",
         "body": "for (( ${1:index} = 1; ${1:index} <= ${0:10}; ${1:index}++ )); do\n\techo \"\\$${1:index}\"\ndone\n",
         "description": "An index-based iteration for loop."
+    },
+    "inv_for_i": {
+        "prefix": "inv_for_i",
+        "body": "for (( ${1:index} = 10; ${1:index} > 0; ${1:index}-- )); do\n\techo \"\\$${1:index}\"\ndone\n",
+        "description": "An index-based iteration for loop (inverse)."
     },
     "while": {
         "prefix": "while",
